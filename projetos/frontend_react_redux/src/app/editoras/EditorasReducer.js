@@ -6,6 +6,7 @@ const INITIAL_STATE = {
 }
 
 export default function (state = INITIAL_STATE, action) {
+    console.log('EditorasReducer: ',action.type)
     if (action.type === 'LISTA_EDITORAS') {
         return { ...state, lista: action.payload }
     } else if (action.type === 'DEF_CADASTRO') {
@@ -14,8 +15,8 @@ export default function (state = INITIAL_STATE, action) {
         //console.log(cadastro)
         return { ...state, cadastro: cadastro }
     } else if (action.type === 'INI_CADASTRO') {
-        //console.log('INI_CADASTRO payload: ', action.payload)
-        return { ...state, cadastro: action.payload || INITIAL_STATE.cadastro }
+        console.log('INI_CADASTRO payload: ', action.payload)
+        return { ...state, cadastro: action.payload || new Editora() }
     }
     return state
 }

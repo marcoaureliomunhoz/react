@@ -13,8 +13,18 @@ import Formulario from '../../componentes/Formulario'
 
 class CadEditora extends React.Component {
 
+    // constructor(props) {
+    //     console.log('CadEditora constructor')
+
+    //     super(props)
+
+    //     const id = this.props.match.params.id || 0
+    //     this.props.iniCadastro(id)
+    // }
+
     componentWillMount() {
-        //console.log('componentWillMount: ',this.props)
+        console.log('CadEditora componentWillMount')
+
         const id = this.props.match.params.id || 0
         this.props.iniCadastro(id)
     }
@@ -29,12 +39,12 @@ class CadEditora extends React.Component {
                 </div>
                 <Formulario>
                     <label>Nome</label>
-                    <input name='Nome' className='w100'
+                    <input type='text' name='Nome' className='w100'
                         onChange={this.props.defCadastro}
                         value={this.props.cadastro.Nome}/>
                     <br/><br/>
                     <label>E-mail</label>
-                    <input name='Email' className='w100'
+                    <input type='text' name='Email' className='w100'
                         onChange={this.props.defCadastro}
                         value={this.props.cadastro.Email}/>
                 </Formulario>

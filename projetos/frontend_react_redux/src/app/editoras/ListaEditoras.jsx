@@ -10,55 +10,57 @@ import Botao from '../../componentes/Botao'
 import { getLista } from './EditorasActions';
 
 class ListaEditoras extends Component {
-  componentWillMount() {
-      this.props.getLista();
-  }
+    componentWillMount() {
+        console.log('ListaEditoras componentWillMount')
 
-  render() {
-    return (
-        <div>
-            <Topo/>
-            <Titulo nome='Editoras'/>
-            <div className='barra-botoes'>
-                <Botao texto='Nova' onClick={() => this.btnNovaClick()}/>
+        this.props.getLista()
+    }
+
+    render() {
+        return (
+            <div>
+                <Topo/>
+                <Titulo nome='Editoras'/>
+                <div className='barra-botoes'>
+                    <Botao texto='Nova' onClick={() => this.btnNovaClick()}/>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-mail</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.renderRows()}
+                    </tbody>
+                </table>
             </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>E-mail</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderRows()}
-                </tbody>
-            </table>
-        </div>
-    );
-  }
+        );
+    }
 
-  renderRows() {
-    const list = this.props.lista || []
-    return list.map(item => (
-        <tr key={item.Id}>
-            <td>{item.Nome}</td>
-            <td>{item.Email}</td>
-            <td><a href={`#/alterar-editora/${item.Id}`}>Alterar</a></td>
-        </tr>
-    ))
-  }
+    renderRows() {
+        const list = this.props.lista || []
+        return list.map(item => (
+            <tr key={item.Id}>
+                <td>{item.Nome}</td>
+                <td>{item.Email}</td>
+                <td><a href={`#/alterar-editora/${item.Id}`}>Alterar</a></td>
+            </tr>
+        ))
+    }
 
-  btnNovaClick() {
-    //console.log('btnNovaClick')
-    this.props.history.push('/nova-editora')
-  }
+    btnNovaClick() {
+        //console.log('btnNovaClick')
+        this.props.history.push('/nova-editora')
+    }
 }
 
 const mapStateToProps = state => ({
-  lista : state.editoras.lista
+    lista : state.editoras.lista
 })
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getLista
+    getLista
 }, dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(ListaEditoras)

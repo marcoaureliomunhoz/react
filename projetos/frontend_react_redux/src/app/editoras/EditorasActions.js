@@ -15,7 +15,7 @@ export function getLista() {
 }
 
 export function defCadastro(event) {
-    //console.log(event.target.name)
+    console.log('defCadastro: ',event.target.name)
     return {
         type: 'DEF_CADASTRO', 
         payload: event.target.value,
@@ -24,10 +24,10 @@ export function defCadastro(event) {
 }
 
 export function salvarEditora(editora) {
-    //console.log('editora.id: ', editora.id)
-    if (editora.id) {
+    //console.log('salvarEditora: ', editora)
+    if (editora.Id) {
         return dispatch => {
-            axios.put(`${BASE_URL}/editora/${editora.id}`, editora)
+            axios.put(`${BASE_URL}/editora/${editora.Id}`, editora)
                 .then(resp => {
                     console.log('ok! => ',resp.data)
                 })
