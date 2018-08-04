@@ -27,7 +27,7 @@ namespace biblio.Controllers
         [HttpGet("editoras")]
         public IEnumerable<EditoraDTO> Get()
         {
-           var editoras = _db.Editoras.Find(_ => true).ToList();
+            var editoras = _db.Editoras.Find(_ => true).ToList();
             var dtos = new List<EditoraDTO>();
             editoras.ForEach(x => dtos.Add(new EditoraDTO
             {
