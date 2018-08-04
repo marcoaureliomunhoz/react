@@ -1,0 +1,15 @@
+.topo {
+    background-color: #ddd;
+    padding: 10px;
+}
+
+.topo a {
+    padding: 3px;
+    font-weight: bold;
+    text-decoration: none;
+    color: blue;
+}
+
+.topo a:hover {
+    color: darkblue;
+}
