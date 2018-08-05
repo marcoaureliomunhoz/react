@@ -1,0 +1,21 @@
+table {
+    padding: 13px;
+    width: 100%;
+}
+
+.barra-botoes {
+    padding: 13px;
+    width: 100%;
+    background-color: #eee;
+}
+
+th, td {
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+th {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}

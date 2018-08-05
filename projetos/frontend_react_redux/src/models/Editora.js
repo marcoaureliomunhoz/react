@@ -1,5 +1,5 @@
 export default class Editora {
-    id = '';
-    nome = '';
-    email = '';
+    Id = '';
+    Nome = '';
+    Email = '';
 }
