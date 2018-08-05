@@ -80,5 +80,16 @@ namespace biblio.Controllers
             return dto;
         }
 
+        [HttpDelete("editora/{id}")]
+        public long Delete(string id)
+        {
+            long qtde = 0;
+            if (!string.IsNullOrEmpty(id))
+            {
+                qtde = _db.Editoras.DeleteOne(x => x.EditoraId == id).DeletedCount;
+            }
+            return qtde;
+        }
+
     }
 }

@@ -42,6 +42,26 @@ export function salvarEditora(editora) {
     }
 }
 
+export function excluirEditora(id) {
+    console.log('excluirEditora: ', id)
+    return dispatch => {
+        axios.delete(`${BASE_URL}/editora/${id}`)
+            .then(resp => {
+                dispatch(iniCadastro())
+            })
+    }
+}
+
+export function excluirEditoraList(id) {
+    console.log('excluirEditoraList: ', id)
+    return dispatch => {
+        axios.delete(`${BASE_URL}/editora/${id}`)
+            .then(resp => {
+                dispatch(getLista())
+            })
+    }
+}
+
 export function iniCadastro(id) {
     console.log('iniCadastro: ', id)
     if (id) {

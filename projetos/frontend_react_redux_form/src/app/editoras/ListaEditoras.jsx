@@ -7,7 +7,7 @@ import Topo from '../../componentes/Topo'
 import Titulo from '../../componentes/Titulo'
 import Botao from '../../componentes/Botao'
 
-import { getLista } from './EditorasActions';
+import { getLista, excluirEditoraList } from './EditorasActions';
 
 class ListaEditoras extends Component {
     componentWillMount() {
@@ -41,12 +41,18 @@ class ListaEditoras extends Component {
     }
 
     renderRows() {
+        const style = {
+            maxWidth: '100px'
+        }
         const list = this.props.lista || []
         return list.map(item => (
             <tr key={item.Id}>
                 <td>{item.Nome}</td>
                 <td>{item.Email}</td>
-                <td><a href={`#/alterar-editora/${item.Id}`}>Alterar</a></td>
+                <td style={style}>
+                    <a href={`#/alterar-editora/${item.Id}`}>Alterar</a> &nbsp;
+                    <Botao texto='Excluir' onClick={() => this.props.excluirEditoraList(item.Id)}/>
+                </td>
             </tr>
         ))
     }
@@ -61,6 +67,6 @@ const mapStateToProps = state => ({
     lista : state.editoras.lista
 })
 const mapDispatchToProps = dispatch => bindActionCreators({
-    getLista
+    getLista, excluirEditoraList
 }, dispatch)
 export default connect(mapStateToProps,mapDispatchToProps)(ListaEditoras)
