@@ -1,0 +1,7 @@
+export const TodoConstants = {
+    API_URL: 'http://localhost:5000/api/todos',
+    TODO_DESCRIPTION_CHANGED: 'TODO_DESCRIPTION_CHANGED',
+    TODO_CLEAR_FORM: 'TODO_CLEAR_FORM',
+    TODO_ADDED: 'TODO_ADDED',
+    TODO_LISTED: 'TODO_LISTED'
+}

@@ -1,65 +1,16 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import './Todo.css'
 import PageHeader from '../template/PageHeader'
 import TodoForm from './TodoForm'
 import TodoList from "./TodoList";
+import { getItems } from './TodoActions'
 
-const URL = 'http://localhost:5000/api/todos'
+class Todo extends Component {
 
-export default class Todo extends Component {
-
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            description: '',
-            list: []
-        }
-
-        this.onClickAdd = this.onClickAdd.bind(this)
-        this.onChangeInputAdd = this.onChangeInputAdd.bind(this)
-        this.onClickDelete = this.onClickDelete.bind(this)
-        this.onClearForm = this.onClearForm.bind(this)
-
-        this.refresh()
-    }
-
-    onClickAdd() {
-        const description = this.state.description
-        axios
-            .post(URL, { description })
-            .then(resp => {
-                this.refresh()
-            })
-    }
-
-    onClickDelete(id) {
-        axios
-            .delete(`${URL}/${id}`)
-            .then(resp => {
-                this.refresh()
-            })
-    }
-
-    onChangeInputAdd(event) {
-        this.setState({ ...this.state, description: event.target.value })
-    }
-
-    onClearForm() {
-        this.setState({ ...this.state, description: '' })
-    }
-
-    refresh() {
-        axios
-            .get(URL)
-            .then(resp => {
-                this.setState({
-                    ...this.state,
-                    description: '',
-                    list: resp.data
-                })
-            })
+    componentDidMount() {
+        this.props.getItems()
     }
 
     render() {
@@ -67,21 +18,23 @@ export default class Todo extends Component {
             <div>
                 <PageHeader 
                     title='Todo' 
-                    details='List and register todos'
+                    details='Manage your tasks'
                 />
 
-                <TodoForm 
-                    description={this.state.description}
-                    clickAdd={this.onClickAdd}
-                    changeInputAdd={this.onChangeInputAdd}
-                    clearForm={this.onClearForm}
-                />
-
-                <TodoList
-                    list={this.state.list}
-                    clickDelete={this.onClickDelete}
-                />
+                <TodoForm />
+                <TodoList />
             </div>
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+})
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        getItems
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todo)

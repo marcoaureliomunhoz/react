@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { deleteItem } from './TodoListActions'
 import './TodoList.css'
 import IconButton from "../template/IconButton";
 
-export default class TodoList extends Component {
+class TodoList extends Component {
 
     render() {
         const renderRows = () => {
@@ -35,3 +38,15 @@ export default class TodoList extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => ({
+    list: state.todo.list
+})
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        clickDelete: deleteItem
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList)

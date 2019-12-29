@@ -53,8 +53,12 @@ namespace todoapp.Controllers
         public ActionResult<int> Delete(int id)
         {
             var todo = _context.Set<Todo>().FirstOrDefault(x => x.Id == id);
-            _context.Remove(todo);
-            return _context.SaveChanges();
+            if (todo != null) 
+            {
+                _context.Remove(todo);
+                return _context.SaveChanges();
+            }
+            return 0;
         }
     }
 }
