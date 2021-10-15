@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 interface IClickableProps {
     width?: string
+    marginBottom?: string
 }
 
 export const Clickable = styled.button<IClickableProps>`
@@ -16,5 +17,6 @@ export const Clickable = styled.button<IClickableProps>`
     font-size: 1em;
     cursor: pointer;
     width: ${props => props.width || 'auto'};
-    background-color: ${props => props.theme.secondaryColor};    
+    background-color: ${props => props.theme.secondaryColor}; 
+    margin-bottom: ${props => props.marginBottom || '0px'};
 `

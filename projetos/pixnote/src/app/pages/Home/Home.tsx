@@ -11,12 +11,19 @@ import UserContext from '../../contexts/UserContext'
 import { Routes } from '../../Routes'
 import Button from '../../components/Button/Button'
 import { Panel } from '../../components/Layout/Panel'
+import { useSelector } from 'react-redux'
+import { IInititalState } from '../../reducers/clientReducer'
 
 const Home: React.FC = () => {
 
     const [ showSide, setShowSide ] = useState('')
     const { state } = useContext(UserContext)
     const history = useHistory()
+    const { clientId } = useSelector<{client: IInititalState}, {clientId?: string}>(state => {
+        return {
+            clientId: state.client.id
+        }
+    })
 
     if (!state.name) {
         history.replace(Routes.Login)
@@ -33,6 +40,7 @@ const Home: React.FC = () => {
             />
             <Body borderRightWidth='1px'>
                 <Panel>
+                    <Button text='Identificar Cliente' width='98%' click={setClient} marginBottom='5px' />
                     <Button text='Sair' width='98%' click={close} />
                 </Panel>
             </Body>
@@ -73,7 +81,7 @@ const Home: React.FC = () => {
                 Body...
             </Body>
             <Footer>
-                <StaticText width='100%' textAlign='center'>Olá {state.name}!</StaticText>
+                <StaticText width='100%' textAlign='center'>Olá {state.name} - {clientId || '?'}!</StaticText>
             </Footer>
         </Page>
     )
@@ -88,6 +96,10 @@ const Home: React.FC = () => {
 
     function showForm() {
         setShowSide('right')
+    }
+
+    function setClient() {
+        history.replace(Routes.ClientIdentify)
     }
 
     function close() {

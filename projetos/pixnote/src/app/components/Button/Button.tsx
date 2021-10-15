@@ -7,18 +7,20 @@ interface IButtonProps {
     text?: string
     click?: () => void
     width?: string
+    marginBottom?: string
 }
 
 const Button: React.FC<IButtonProps> = ({
     text,
     click,
-    width
+    width,
+    marginBottom
 }) => {
 
     const theme = useTheme()
 
     return (
-        <Clickable onClick={click} width={width}>
+        <Clickable onClick={click} width={width} marginBottom={marginBottom}>
             <StaticText width='100%' textAlign='center' bold textColor={theme.secondaryColorText}>{text}</StaticText>
         </Clickable>
     )
