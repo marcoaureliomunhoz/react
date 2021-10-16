@@ -21,8 +21,7 @@ const ClientIdentify: React.FC = () => {
         }
     })
     const dispatch = useDispatch()
-    const clientActions = new ClientActions(dispatch)
-
+    const clientActions = React.useMemo(() => new ClientActions(dispatch), [dispatch])
     const storeIdentification = React.useCallback((value: string) => {
         clientActions.setIdentification(value)
     }, [clientActions])

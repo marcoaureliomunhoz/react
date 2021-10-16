@@ -7,14 +7,27 @@ import { Provider } from 'react-redux'
 import { applyMiddleware, createStore } from 'redux'
 import rootReducer from './app/reducers/rootReducer'
 import thunk from 'redux-thunk'
+import { ServiceLocator, Lookup, DecouplerProvider } from 'react-decoupler'
+import { FakeHttpService } from './app/services/FakeHttpService'
+import { PixService } from './app/services/PixService'
+//import { HttpService } from './app/services/HttpService'
+
+const locator = new ServiceLocator()
+locator.register('HttpService', FakeHttpService)
+//locator.register('HttpService', HttpService)
+locator.register('PixService', PixService, {
+ withParams: [Lookup('HttpService')]
+})
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <AppRoutes />
-    </Provider>
+    <DecouplerProvider locator={locator}>
+      <Provider store={store}>
+        <AppRoutes />
+      </Provider>
+    </DecouplerProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

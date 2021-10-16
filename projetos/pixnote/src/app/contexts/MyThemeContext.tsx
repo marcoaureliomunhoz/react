@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext } from 'react'
 
 export interface IMyThemeContext {
     primaryColor: string

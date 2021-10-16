@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { faAngleDoubleLeft, faAngleDoubleRight, faBars, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { ButtonIcon } from '../../components/ButtonIcon/ButtonIcon'
@@ -13,6 +13,12 @@ import Button from '../../components/Button/Button'
 import { Panel } from '../../components/Layout/Panel'
 import { useSelector } from 'react-redux'
 import { IInititalState } from '../../reducers/clientReducer'
+import { useServices } from 'react-decoupler'
+import { Pix } from '../../models/Pix'
+import PixCard from './components/PixCard'
+import PixForm from './components/PixForm'
+import { PixService as PixServiceClass } from '../../services/PixService'
+import { FakeHttpService } from '../../services/FakeHttpService'
 
 const Home: React.FC = () => {
 
@@ -24,6 +30,24 @@ const Home: React.FC = () => {
             clientId: state.client.id
         }
     })
+    let fakeHttpService: FakeHttpService | null = null
+    //fakeHttpService = new FakeHttpService()
+    //const PixServiceClassInject: any = null
+    const [PixServiceClassInject] = useServices(['PixService'])
+    const [pixList, setPixList] = useState<Pix[]>([])
+
+    const pixService = React.useMemo(() => {
+        return PixServiceClassInject ? new PixServiceClassInject() : new PixServiceClass(fakeHttpService)
+    }, [PixServiceClassInject, fakeHttpService])
+
+    useEffect(() => {
+        if (clientId) {
+            pixService.listFromClientId(clientId)
+                .then((response: any) => {
+                    setPixList(response || [])
+                })
+        }
+    }, [clientId, pixService])
 
     if (!state.name) {
         history.replace(Routes.Login)
@@ -57,7 +81,15 @@ const Home: React.FC = () => {
             />
             <Body borderLeftWidth='1px'>
                 <Panel>
-                    ...
+                    <PixForm
+                        model={{
+                            clientId: clientId,
+                            personName: '',
+                            key: '',
+                            type: ''
+                        }}
+                        save={(pix: Pix) => savePix(pix)}
+                    />
                 </Panel>
             </Body>
         </>
@@ -78,7 +110,12 @@ const Home: React.FC = () => {
                 rightContent={rightContentHeader}
             />
             <Body>
-                Body...
+            {pixList.map((pix, ipix) => {
+
+                return (
+                    <PixCard key={`pix-${ipix}`} model={pix} />
+                )
+            })}
             </Body>
             <Footer>
                 <StaticText width='100%' textAlign='center'>Olá {state.name} - {clientId || '?'}!</StaticText>
@@ -104,6 +141,14 @@ const Home: React.FC = () => {
 
     function close() {
         history.replace(Routes.Login)
+    }
+
+    function savePix(pix: Pix) {
+        pixService.save(pix)
+            .then((response: any) => {
+                setPixList(response || [])
+                showBody()
+            })
     }
 }
 
