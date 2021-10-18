@@ -1,29 +1,18 @@
+import { HttpServiceBase } from "./HttpServiceBase"
 import { Pix } from "../models/Pix"
-import { HttpService } from "./HttpService"
-import { IHttpService } from "./IHttpService"
 
-const urlBase = 'https://localhost:5001/api'
-
-export class PixService {
-
-    private readonly http: IHttpService
+export class PixService extends HttpServiceBase {
 
     constructor(http?: any | null) {
-        const typeOfHttp = typeof http
-        if (typeOfHttp === 'object') {
-            this.http = http
-        } else if (typeOfHttp === 'function') {
-            this.http = new http()
-        } else {
-            this.http = new HttpService()
-        }
+        super(http)
+        console.log('Criando PixService')
     }
 
     listFromClientId = (clientId: string) => {
-        return this.http.get<Pix[]>(`${urlBase}/pix`)
+        return this.http.get<Pix[]>(`${this.urlBase}/pix`)
     }
 
     save = (pix: Pix) => {
-        return this.http.post<any, Pix>(`${urlBase}/pix`, pix)
+        return this.http.post<any, Pix>(`${this.urlBase}/pix`, pix)
     }
 }

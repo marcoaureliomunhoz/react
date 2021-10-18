@@ -21,12 +21,16 @@ const ClientIdentify: React.FC = () => {
         }
     })
     const dispatch = useDispatch()
+    //const clientActions = new ClientActions(dispatch)
+    //Ao usar useMemo evitamos a recriação de clientActions toda vez que o componente é renderizado
     const clientActions = React.useMemo(() => new ClientActions(dispatch), [dispatch])
-    const storeIdentification = React.useCallback((value: string) => {
+    const storeIdentification = (value: string) => {
         clientActions.setIdentification(value)
-    }, [clientActions])
+    }
 
     const leftContentHeader = <ButtonIcon icon={faChevronLeft} click={backToHome} />
+
+    console.log('renderizando ClientIdentify...')
 
     return (
         <Page>

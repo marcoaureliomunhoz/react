@@ -4,6 +4,10 @@ const sessionRepoKey = (value: string) => `${value}-repo`
 
 export class FakeHttpService implements IHttpService {
 
+    constructor() {
+        console.log('Criando FakeHttpService')
+    }
+
     get = async <TResult>(url: string) => {
         const promise: Promise<TResult | null> = new Promise(async (resolve, reject) => {
             try {

@@ -3,6 +3,10 @@ import {IHttpService} from './IHttpService'
 
 export class HttpService implements IHttpService {
 
+    constructor() {
+        console.log('Criando HttpService')
+    }
+
     get = async <TResult>(url: string) => {
         const promise: Promise<TResult> = new Promise(async (resolve, reject) => {
             try {

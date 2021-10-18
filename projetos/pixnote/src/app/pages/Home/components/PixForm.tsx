@@ -15,6 +15,8 @@ const PixForm: React.FC<IFormProps> = ({
     const [name, setName] = useState<string>(model?.personName || '')
     const [key, setKey] = useState<string>(model?.key || '')
 
+    console.log('renderizando PixForm...')
+
     return (
         <>
             <Field title='Nome' value={name} change={(value) => setName(value)} />

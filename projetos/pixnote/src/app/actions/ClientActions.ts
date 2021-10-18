@@ -6,6 +6,7 @@ export class ClientActions {
 
     constructor(dispatch: Dispatch<IDispatchAction>) {
         this.dispatch = dispatch
+        console.log('criando ClientActions')
     }
 
     setIdentification = (id: string) => {

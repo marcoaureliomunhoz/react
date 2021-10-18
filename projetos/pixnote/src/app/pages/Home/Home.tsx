@@ -13,12 +13,13 @@ import Button from '../../components/Button/Button'
 import { Panel } from '../../components/Layout/Panel'
 import { useSelector } from 'react-redux'
 import { IInititalState } from '../../reducers/clientReducer'
-import { useServices } from 'react-decoupler'
+//import { useServices } from 'react-decoupler'
 import { Pix } from '../../models/Pix'
 import PixCard from './components/PixCard'
 import PixForm from './components/PixForm'
-import { PixService as PixServiceClass } from '../../services/PixService'
-import { FakeHttpService } from '../../services/FakeHttpService'
+//import { PixService as PixServiceClass } from '../../services/PixService'
+//import { FakeHttpService } from '../../services/FakeHttpService'
+import ServicesContext from '../../contexts/ServicesContext'
 
 const Home: React.FC = () => {
 
@@ -30,15 +31,14 @@ const Home: React.FC = () => {
             clientId: state.client.id
         }
     })
-    let fakeHttpService: FakeHttpService | null = null
-    //fakeHttpService = new FakeHttpService()
-    //const PixServiceClassInject: any = null
-    const [PixServiceClassInject] = useServices(['PixService'])
     const [pixList, setPixList] = useState<Pix[]>([])
 
-    const pixService = React.useMemo(() => {
-        return PixServiceClassInject ? new PixServiceClassInject() : new PixServiceClass(fakeHttpService)
-    }, [PixServiceClassInject, fakeHttpService])
+    // const [PixServiceClassInject] = useServices(['PixService'])
+    // const pixService = React.useMemo(() => {
+    //     return PixServiceClassInject ? new PixServiceClassInject() : new PixServiceClass()
+    // }, [PixServiceClassInject])
+
+    const { pixService } = useContext(ServicesContext)
 
     useEffect(() => {
         if (clientId) {
@@ -47,6 +47,37 @@ const Home: React.FC = () => {
                     setPixList(response || [])
                 })
         }
+    }, [clientId, pixService])
+
+    // function savePix(pix: Pix) {
+    //     pixService.save(pix)
+    //         .then((response: any) => {
+    //             setPixList(response || [])
+    //             showBody()
+    //         })
+    // }
+
+    // Evita a renderização de PixForm de forma desnecessária
+    const pixForm = React.useMemo(() => {
+        function savePix(pix: Pix) {
+            pixService.save(pix)
+                .then((response: any) => {
+                    setPixList(response || [])
+                    showBody()
+                })
+        }
+
+        return (
+            <PixForm
+                model={{
+                    clientId: clientId,
+                    personName: '',
+                    key: '',
+                    type: ''
+                }}
+                save={(pix: Pix) => savePix(pix)}
+            />
+        )
     }, [clientId, pixService])
 
     if (!state.name) {
@@ -81,7 +112,8 @@ const Home: React.FC = () => {
             />
             <Body borderLeftWidth='1px'>
                 <Panel>
-                    <PixForm
+                    {pixForm}
+                    {/* <PixForm
                         model={{
                             clientId: clientId,
                             personName: '',
@@ -89,7 +121,7 @@ const Home: React.FC = () => {
                             type: ''
                         }}
                         save={(pix: Pix) => savePix(pix)}
-                    />
+                    /> */}
                 </Panel>
             </Body>
         </>
@@ -98,15 +130,17 @@ const Home: React.FC = () => {
     const leftContentHeader = !showSide ? <ButtonIcon icon={faBars} click={showMenu} /> : null
     const rightContentHeader = !showSide ? <ButtonIcon icon={faPlus} click={showForm} /> : null
 
+    console.log('renderizando Home...')
+
     return (
         <Page
             showSide={showSide}
             leftContent={leftSideContent}
             rightContent={rightSideContent}
         >
-            <Header 
+            <Header
                 leftContent={leftContentHeader}
-                title='PixNote' 
+                title='PixNote'
                 rightContent={rightContentHeader}
             />
             <Body>
@@ -141,14 +175,6 @@ const Home: React.FC = () => {
 
     function close() {
         history.replace(Routes.Login)
-    }
-
-    function savePix(pix: Pix) {
-        pixService.save(pix)
-            .then((response: any) => {
-                setPixList(response || [])
-                showBody()
-            })
     }
 }
 
